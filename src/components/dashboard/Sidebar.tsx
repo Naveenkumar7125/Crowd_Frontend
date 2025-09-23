@@ -9,6 +9,13 @@ import {
   Menu
 } from 'lucide-react';
 
+interface SidebarProps {
+  isOpen: boolean;
+  activeTab: string;
+  onTabChange: (tab: string) => void;
+  onToggle: () => void;
+}
+
 const navItems = [
   { id: 'dashboard', label: 'Dashboard', icon: Home },
   { id: 'cameras', label: 'Camera Feeds', icon: Video },
@@ -18,7 +25,7 @@ const navItems = [
   { id: 'settings', label: 'Settings', icon: Settings },
 ];
 
-export const Sidebar = ({ isOpen, activeTab, onTabChange, onToggle }) => {
+export const Sidebar = ({ isOpen, activeTab, onTabChange, onToggle }: SidebarProps) => {
   return (
     <div className={`fixed left-0 top-0 h-full z-50 transition-transform duration-300 ease-smooth ${
       isOpen ? 'translate-x-0' : '-translate-x-full'

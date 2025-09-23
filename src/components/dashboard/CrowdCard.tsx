@@ -1,14 +1,26 @@
 import { Image, TrendingUp, TrendingDown, Minus, FileText, Eye } from 'lucide-react';
 
-export const CrowdCard = ({ crowd }) => {
-  const getDensityStatus = (density) => {
+interface CrowdData {
+  id: number;
+  area: string;
+  density: number;
+  trend: string;
+  imageUrl?: string;
+}
+
+interface CrowdCardProps {
+  crowd: CrowdData;
+}
+
+export const CrowdCard = ({ crowd }: CrowdCardProps) => {
+  const getDensityStatus = (density: number) => {
     if (density >= 90) return { label: 'Critical', color: 'danger' };
     if (density >= 80) return { label: 'High', color: 'warning' };
     if (density >= 60) return { label: 'Medium', color: 'primary' };
     return { label: 'Low', color: 'accent' };
   };
 
-  const getTrendIcon = (trend) => {
+  const getTrendIcon = (trend: string) => {
     if (trend.includes('increasing') || trend === 'high' || trend === 'critical') {
       return <TrendingUp size={14} className="text-danger" />;
     }
@@ -32,7 +44,7 @@ export const CrowdCard = ({ crowd }) => {
       <div className="bg-surface-elevated border-b border-border p-4">
         <div className="flex items-center justify-between">
           <h3 className="font-semibold text-foreground">{crowd.area}</h3>
-          <div className={`px-2 py-1 rounded-full text-xs font-medium border ${statusColors[status.color]}`}>
+          <div className={`px-2 py-1 rounded-full text-xs font-medium border ${statusColors[status.color as keyof typeof statusColors]}`}>
             <div className="flex items-center gap-1">
               <div className={`w-2 h-2 rounded-full ${
                 status.color === 'danger' ? 'bg-danger' : 
@@ -53,7 +65,7 @@ export const CrowdCard = ({ crowd }) => {
             alt={crowd.area}
             className="w-full h-full object-cover"
             onError={(e) => {
-              const target = e.target;
+              const target = e.target as HTMLImageElement;
               target.style.display = 'none';
               target.nextElementSibling?.classList.remove('hidden');
             }}

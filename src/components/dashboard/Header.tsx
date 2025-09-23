@@ -1,6 +1,10 @@
 import { Search, Bell, Menu } from 'lucide-react';
 
-export const Header = ({ onMenuToggle }) => {
+interface HeaderProps {
+  onMenuToggle: () => void;
+}
+
+export const Header = ({ onMenuToggle }: HeaderProps) => {
   return (
     <header className="bg-surface border-b border-border shadow-soft">
       <div className="flex items-center justify-between px-6 py-4">

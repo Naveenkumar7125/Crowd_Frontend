@@ -8,6 +8,49 @@ import { QueueManagement } from './QueueManagement';
 import { CrowdManagement } from './CrowdManagement';
 import { ChartsGrid } from './ChartsGrid';
 
+// Mock data and types
+interface CameraData {
+  id: number;
+  name: string;
+  lane: string;
+  status: 'Active' | 'Inactive';
+  alerts: number;
+  capacity: number;
+  imageUrl?: string;
+  timestamp?: string;
+}
+
+interface QueueData {
+  id: number;
+  name: string;
+  people: number;
+  waitTime: string;
+  threshold: number;
+  status: 'normal' | 'critical';
+}
+
+interface CrowdData {
+  id: number;
+  area: string;
+  density: number;
+  trend: string;
+  imageUrl?: string;
+}
+
+interface Alert {
+  id: number;
+  title: string;
+  description: string;
+  priority: 'high' | 'medium' | 'low';
+}
+
+interface StatsData {
+  totalVisitors: number;
+  currentVisitors: number;
+  crowdDensity: number;
+  avgWaitTime: string;
+}
+
 export const PilgrimageDashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -15,7 +58,7 @@ export const PilgrimageDashboard = () => {
   const [loadingCrowdData, setLoadingCrowdData] = useState(false);
 
   // Mock data
-  const [cameras, setCameras] = useState([
+  const [cameras, setCameras] = useState<CameraData[]>([
     { id: 1, name: 'Main Entrance', lane: 'Entry Lane 1', status: 'Active', alerts: 0, capacity: 45, imageUrl: 'https://res.cloudinary.com/dprwjya79/image/upload/v1758359521/Crowd_Detection/nz62gpkdiusiibxlbmgy.jpg' },
     { id: 2, name: 'West Gate', lane: 'Entry Lane 2', status: 'Active', alerts: 2, capacity: 78, imageUrl: 'https://res.cloudinary.com/dprwjya79/image/upload/v1758359507/Crowd_Detection/dbsweorkqtdqhvolfymr.jpg' },
     { id: 3, name: 'East Exit', lane: 'Exit Lane 1', status: 'Active', alerts: 1, capacity: 32, imageUrl: 'https://res.cloudinary.com/dprwjya79/image/upload/v1758359482/Crowd_Detection/hx298u9dwwotv14whm73.jpg' },
@@ -26,14 +69,14 @@ export const PilgrimageDashboard = () => {
     { id: 8, name: 'Medical Tent', lane: 'Emergency Lane', status: 'Active', alerts: 0, capacity: 15, imageUrl: 'https://res.cloudinary.com/dprwjya79/image/upload/v1758349880/Crowd_Detection/gqegnrsm5d9r3xfzqj14.jpg' },
   ]);
 
-  const [queues, setQueues] = useState([
+  const [queues, setQueues] = useState<QueueData[]>([
     { id: 1, name: 'Security Check A', people: 42, waitTime: '18m', threshold: 35, status: 'critical' },
     { id: 2, name: 'Entry Gate B', people: 28, waitTime: '12m', threshold: 40, status: 'normal' },
     { id: 3, name: 'Food Court', people: 65, waitTime: '22m', threshold: 50, status: 'critical' },
     { id: 4, name: 'Shrine Access', people: 38, waitTime: '15m', threshold: 45, status: 'normal' }
   ]);
 
-  const [crowdData, setCrowdData] = useState([
+  const [crowdData, setCrowdData] = useState<CrowdData[]>([
     { id: 1, area: 'Main Plaza', density: 85, trend: 'increasing', imageUrl: 'https://res.cloudinary.com/dprwjya79/image/upload/v1758359179/Stampede/dximkukfoae2z98minve.jpg' },
     { id: 2, area: 'Food Court', density: 92, trend: 'high', imageUrl: 'https://res.cloudinary.com/dprwjya79/image/upload/v1758359207/Stampede/swh7kga2taxagz3y0nc6.jpg' },
     { id: 3, area: 'Prayer Hall', density: 45, trend: 'stable', imageUrl: 'https://res.cloudinary.com/dprwjya79/image/upload/v1758359302/Stampede/xae0ngkq7dukp9aujcbg.jpg' },
@@ -42,12 +85,12 @@ export const PilgrimageDashboard = () => {
     { id: 6, area: 'East Wing', density: 88, trend: 'high', imageUrl: 'https://res.cloudinary.com/dprwjya79/image/upload/v1758359841/Stampede/boyie8eksvfpjdj02dqp.jpg' },
   ]);
 
-  const [alerts, setAlerts] = useState([
+  const [alerts, setAlerts] = useState<Alert[]>([
     { id: 1, title: 'Overcrowding Alert', description: 'Food Court area exceeds capacity by 35%', priority: 'high' },
     { id: 2, title: 'Queue Congestion', description: 'Security Check A wait time exceeds 20 minutes', priority: 'high' }
   ]);
 
-  const [stats, setStats] = useState({
+  const [stats, setStats] = useState<StatsData>({
     totalVisitors: 12542,
     currentVisitors: 2846,
     crowdDensity: 72,
@@ -81,7 +124,7 @@ export const PilgrimageDashboard = () => {
   };
 
   // Handle queue adjustments
-  const handleAdjustQueue = (id, action) => {
+  const handleAdjustQueue = (id: number, action: 'increase' | 'decrease' | 'reset') => {
     setQueues(prev => prev.map(queue => {
       if (queue.id === id) {
         switch (action) {
@@ -90,7 +133,7 @@ export const PilgrimageDashboard = () => {
           case 'decrease':
             return { ...queue, people: Math.max(0, queue.people - 5) };
           case 'reset':
-            return { ...queue, people: 10, waitTime: '5m', status: 'normal' };
+            return { ...queue, people: 10, waitTime: '5m', status: 'normal' as const };
           default:
             return queue;
         }
@@ -100,7 +143,7 @@ export const PilgrimageDashboard = () => {
   };
 
   // Handle alert dismissal
-  const handleDismissAlert = (id) => {
+  const handleDismissAlert = (id: number) => {
     setAlerts(prev => prev.filter(alert => alert.id !== id));
   };
 
@@ -118,7 +161,7 @@ export const PilgrimageDashboard = () => {
         ...queue,
         people: Math.max(0, queue.people + (Math.random() > 0.5 ? 1 : -1)),
         waitTime: `${Math.max(1, Math.min(30, parseInt(queue.waitTime) + (Math.random() > 0.5 ? 1 : -1)))}m`,
-        status: queue.people > queue.threshold ? 'critical' : 'normal'
+        status: queue.people > queue.threshold ? 'critical' as const : 'normal' as const
       })));
 
       // Update stats

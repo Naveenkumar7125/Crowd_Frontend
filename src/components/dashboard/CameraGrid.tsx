@@ -1,12 +1,29 @@
 import { RefreshCw } from 'lucide-react';
-import { CrowdCard } from './CrowdCard';
+import { CameraCard } from './CameraCard';
 
-export const CrowdManagement = ({ crowdData, isLoading, onRefresh }) => {
+interface CameraData {
+  id: number;
+  name: string;
+  lane: string;
+  status: 'Active' | 'Inactive';
+  alerts: number;
+  capacity: number;
+  imageUrl?: string;
+  timestamp?: string;
+}
+
+interface CameraGridProps {
+  cameras: CameraData[];
+  isLoading: boolean;
+  onRefresh: () => void;
+}
+
+export const CameraGrid = ({ cameras, isLoading, onRefresh }: CameraGridProps) => {
   return (
-    <div className="bg-surface rounded-xl shadow-soft p-6">
+    <div className="bg-surface rounded-xl p-6 shadow-soft">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-bold text-foreground">Crowd Density Analysis</h2>
+        <h2 className="text-xl font-bold text-foreground">Live Camera Feeds</h2>
         <button
           onClick={onRefresh}
           disabled={isLoading}
@@ -25,14 +42,14 @@ export const CrowdManagement = ({ crowdData, isLoading, onRefresh }) => {
         <div className="flex items-center justify-center py-20 text-muted-foreground">
           <div className="text-center">
             <RefreshCw size={48} className="mx-auto mb-4 animate-spin" />
-            <p className="text-lg">Loading crowd analysis...</p>
+            <p className="text-lg">Loading camera feeds...</p>
           </div>
         </div>
       ) : (
-        /* Crowd Grid */
+        /* Camera Grid */
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {crowdData.map((crowd) => (
-            <CrowdCard key={crowd.id} crowd={crowd} />
+          {cameras.map((camera) => (
+            <CameraCard key={camera.id} camera={camera} />
           ))}
         </div>
       )}

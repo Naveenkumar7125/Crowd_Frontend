@@ -1,4 +1,15 @@
-import { TrendingUp, TrendingDown } from 'lucide-react';
+import { LucideIcon, TrendingUp, TrendingDown } from 'lucide-react';
+
+interface StatCardProps {
+  title: string;
+  value: string | number;
+  change?: {
+    value: string;
+    type: 'positive' | 'negative';
+  };
+  icon: LucideIcon;
+  variant?: 'default' | 'primary' | 'accent' | 'warning';
+}
 
 export const StatCard = ({ 
   title, 
@@ -6,7 +17,7 @@ export const StatCard = ({
   change, 
   icon: IconComponent, 
   variant = 'default' 
-}) => {
+}: StatCardProps) => {
   const variants = {
     default: 'bg-surface border-border',
     primary: 'bg-gradient-primary text-primary-foreground border-primary/20',

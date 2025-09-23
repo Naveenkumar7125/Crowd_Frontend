@@ -1,7 +1,21 @@
 import { Plus, Settings } from 'lucide-react';
 import { QueueCard } from './QueueCard';
 
-export const QueueManagement = ({ queues, onAdjustQueue }) => {
+interface QueueData {
+  id: number;
+  name: string;
+  people: number;
+  waitTime: string;
+  threshold: number;
+  status: 'normal' | 'critical';
+}
+
+interface QueueManagementProps {
+  queues: QueueData[];
+  onAdjustQueue: (id: number, action: 'increase' | 'decrease' | 'reset') => void;
+}
+
+export const QueueManagement = ({ queues, onAdjustQueue }: QueueManagementProps) => {
   return (
     <div className="bg-surface rounded-xl shadow-soft p-6 mb-8">
       {/* Header */}

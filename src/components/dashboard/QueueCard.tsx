@@ -1,6 +1,20 @@
 import { Plus, Minus, RefreshCw } from 'lucide-react';
 
-export const QueueCard = ({ queue, onAdjust }) => {
+interface QueueData {
+  id: number;
+  name: string;
+  people: number;
+  waitTime: string;
+  threshold: number;
+  status: 'normal' | 'critical';
+}
+
+interface QueueCardProps {
+  queue: QueueData;
+  onAdjust: (id: number, action: 'increase' | 'decrease' | 'reset') => void;
+}
+
+export const QueueCard = ({ queue, onAdjust }: QueueCardProps) => {
   const progressPercentage = Math.min((queue.people / queue.threshold) * 100, 100);
   const isCritical = queue.people > queue.threshold;
 

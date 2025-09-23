@@ -104,7 +104,7 @@ export const CrowdCard = ({ crowd }: CrowdCardProps) => {
         <div className="flex items-center gap-3">
           <button className="flex-1 flex items-center justify-center gap-2 py-2 px-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary-light transition-colors duration-200 text-sm font-medium">
             <Eye size={14} />
-            View Details
+            View
           </button>
           <button className="flex-1 flex items-center justify-center gap-2 py-2 px-3 bg-muted text-muted-foreground rounded-lg hover:bg-muted-dark hover:text-foreground transition-colors duration-200 text-sm font-medium">
             <FileText size={14} />

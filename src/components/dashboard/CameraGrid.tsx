@@ -1,38 +1,64 @@
-import { RefreshCw } from 'lucide-react';
-import { CameraCard } from './CameraCard';
+import { useEffect, useState } from "react";
+import { RefreshCw } from "lucide-react";
+import { CameraCard } from "./CameraCard";
 
 interface CameraData {
   id: number;
   name: string;
   lane: string;
-  status: 'Active' | 'Inactive';
+  status: "Active" | "Inactive";
   alerts: number;
   capacity: number;
   imageUrl?: string;
   timestamp?: string;
 }
 
-interface CameraGridProps {
-  cameras: CameraData[];
-  isLoading: boolean;
-  onRefresh: () => void;
-}
+export const CameraGrid = () => {
+  const [cameras, setCameras] = useState<CameraData[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
-export const CameraGrid = ({ cameras, isLoading, onRefresh }: CameraGridProps) => {
+  const fetchCameras = async () => {
+  try {
+    setIsLoading(true);
+    const res = await fetch("http://localhost:5000/api/frames");
+    const data = await res.json();
+
+    // Normalize fields
+    const formatted = data.map((item: any, index: number) => ({
+      id: item.id ?? index,
+      name: item.name ?? `Camera ${index + 1}`,
+      lane: item.lane ?? "Unknown",
+      status: item.status ?? "Active",
+      alerts: item.alerts ?? 0,
+      capacity: item.capacity ?? 0,
+      imageUrl: item.imageUrl || item.url || item.frame || "", // 👈 important
+      timestamp: item.timestamp,
+    }));
+
+    setCameras(formatted);
+  } catch (error) {
+    console.error("Error fetching camera feeds:", error);
+  } finally {
+    setIsLoading(false);
+  }
+};
+
+
+  useEffect(() => {
+    fetchCameras();
+  }, []);
+
   return (
     <div className="bg-surface rounded-xl p-6 shadow-soft">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-bold text-foreground">Live Camera Feeds</h2>
         <button
-          onClick={onRefresh}
+          onClick={fetchCameras}
           disabled={isLoading}
           className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary-light transition-colors duration-200 disabled:opacity-50"
         >
-          <RefreshCw 
-            size={16} 
-            className={isLoading ? 'animate-spin' : ''} 
-          />
+          <RefreshCw size={16} className={isLoading ? "animate-spin" : ""} />
           Refresh
         </button>
       </div>

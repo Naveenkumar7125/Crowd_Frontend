@@ -20,8 +20,8 @@ const navItems = [
   { id: 'dashboard', label: 'Dashboard', icon: Home },
   { id: 'cameras', label: 'Camera Feeds', icon: Video },
   { id: 'analytics', label: 'Analytics', icon: BarChart2 },
-  { id: 'crowd', label: 'Crowd Management', icon: Users },
-  { id: 'emergency', label: 'Emergency Response', icon: AlertCircle },
+  { id: 'crowd', label: 'Crowd Analysis', icon: Users },
+  { id: 'emergency', label: 'Emergency', icon: AlertCircle },
   { id: 'settings', label: 'Settings', icon: Settings },
 ];
 

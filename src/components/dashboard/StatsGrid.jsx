@@ -1,18 +1,7 @@
 import { Users, BarChart3, Clock, TrendingUp } from 'lucide-react';
 import { StatCard } from './StatCard';
 
-interface StatsData {
-  totalVisitors: number;
-  currentVisitors: number;
-  crowdDensity: number;
-  avgWaitTime: string;
-}
-
-interface StatsGridProps {
-  stats: StatsData;
-}
-
-export const StatsGrid = ({ stats }: StatsGridProps) => {
+export const StatsGrid = ({ stats }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
       <StatCard

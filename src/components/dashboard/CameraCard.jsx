@@ -1,26 +1,11 @@
 import { Image, AlertTriangle, Wifi } from 'lucide-react';
 
-interface CameraData {
-  id: number;
-  name: string;
-  lane: string;
-  status: 'Active' | 'Inactive';
-  alerts: number;
-  capacity: number;
-  imageUrl?: string;
-  timestamp?: string;
-}
-
-interface CameraCardProps {
-  camera: CameraData;
-}
-
-export const CameraCard = ({ camera }: CameraCardProps) => {
-  const getStatusColor = (status: string) => {
+export const CameraCard = ({ camera }) => {
+  const getStatusColor = (status) => {
     return status === 'Active' ? 'bg-accent' : 'bg-danger';
   };
 
-  const getCapacityColor = (capacity: number) => {
+  const getCapacityColor = (capacity) => {
     if (capacity >= 90) return 'text-danger bg-danger/10';
     if (capacity >= 70) return 'text-warning bg-warning/10';
     return 'text-accent bg-accent/10';
@@ -47,7 +32,7 @@ export const CameraCard = ({ camera }: CameraCardProps) => {
             alt={camera.name}
             className="w-full h-full object-cover"
             onError={(e) => {
-              const target = e.target as HTMLImageElement;
+              const target = e.target;
               target.style.display = 'none';
               target.nextElementSibling?.classList.remove('hidden');
             }}

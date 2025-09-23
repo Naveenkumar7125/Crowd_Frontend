@@ -1,18 +1,6 @@
 import { AlertCircle, X } from 'lucide-react';
 
-interface Alert {
-  id: number;
-  title: string;
-  description: string;
-  priority: 'high' | 'medium' | 'low';
-}
-
-interface AlertTickerProps {
-  alerts: Alert[];
-  onDismiss: (id: number) => void;
-}
-
-export const AlertTicker = ({ alerts, onDismiss }: AlertTickerProps) => {
+export const AlertTicker = ({ alerts, onDismiss }) => {
   if (!alerts || alerts.length === 0) return null;
 
   const primaryAlert = alerts[0];

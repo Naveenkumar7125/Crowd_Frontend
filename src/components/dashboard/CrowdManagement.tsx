@@ -17,7 +17,7 @@ export const CrowdManagement = () => {
   const fetchCrowdData = async () => {
     try {
       setIsLoading(true);
-      const res = await fetch("http://localhost:5000/api/stampede");
+      const res = await fetch("https://bc-aj0c.onrender.com/api/stampede");
       const data = await res.json();
 
       // Normalize response in case API field names differ

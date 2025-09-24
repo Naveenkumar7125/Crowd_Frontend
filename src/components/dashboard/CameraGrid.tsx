@@ -20,7 +20,7 @@ export const CameraGrid = () => {
   const fetchCameras = async () => {
   try {
     setIsLoading(true);
-    const res = await fetch("http://localhost:5000/api/frames");
+    const res = await fetch("https://bc-aj0c.onrender.com/api/frames");
     const data = await res.json();
 
     // Normalize fields
